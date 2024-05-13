@@ -5,7 +5,7 @@ import os
 import sys
 
 def test():
-    import sys
+    pass
 
 
 
