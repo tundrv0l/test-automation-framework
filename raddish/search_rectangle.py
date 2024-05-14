@@ -8,6 +8,10 @@
 import pyautogui
 import os
 import sys
+from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor, QPainter, QPen
+import threading
 
 class SearchRectangle:
 
@@ -32,7 +36,26 @@ class SearchRectangle:
         self.width = region[2]
         self.height = region[3]
 
+        self.drawSR()
+
     #TODO Implement the isWithin method, which will check if a given point is within the search rectangle.
     #TODO Add a way to verify that the SR is valid on the screen.
     #TODO Maybe draw a representation of where the SR is??
     #TODO Implement getters for width and height.
+
+
+    
+    def drawSR(self):
+        '''
+        Draw a representation of the search rectangle on the screen.
+
+        Parameters
+        ----------
+        None
+        
+        Returns
+        -------
+        None
+        '''
+
+        #WIP
