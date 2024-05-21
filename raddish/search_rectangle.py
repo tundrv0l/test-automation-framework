@@ -8,10 +8,11 @@
 import tkinter as tk
 from multiprocessing import Process
 import pyautogui
+from pyautogui import ImageNotFoundException
 
 class SearchRectangle:
 
-    def __init__(self, region : list[int]):
+    def __init__(self, region : list[int] = None, topLeftImage : str = None, bottomRightImage : str = None):
         '''
         Initialize the 'SearchRectangle' object.
 
@@ -39,14 +40,35 @@ class SearchRectangle:
             Holds the drawing process of the SR.
         '''
 
-        # Validate the search rectangle
-        self._validateSR(region)
+        # Check if the region is provided
+        if region != None:
 
-        # Assign individual values from the region list
-        self.x = region[0]
-        self.y = region[1]
-        self.width = region[2]
-        self.height = region[3]
+            # Validate the given points provided
+            self._validateSR(region)
+
+            # Assign individual values from the region list
+            self.x = region[0]
+            self.y = region[1]
+            self.width = region[2]
+            self.height = region[3]
+        
+        # Check if the images are provided
+        elif topLeftImage != None and bottomRightImage != None:
+            # Find the top left and bottom right coordinates of the search rectangle
+            try:
+                topLeft = pyautogui.locateOnScreen(topLeftImage, confidence=0.9)
+                bottomRight = pyautogui.locateOnScreen(bottomRightImage, confidence=0.9)
+            except ImageNotFoundException:
+                raise InvalidSR("The images provided could not be found on the screen.")
+            
+            # Assign the values of the search rectangle
+            self.x = topLeft[0]
+            self.y = topLeft[1]
+            self.width = bottomRight[0] - topLeft[0]
+            self.height = bottomRight[1] - topLeft[1]
+        
+        else:
+            raise InvalidSR("No region or images were provided to create the search rectangle.")
 
         # Start a new process to draw the search rectangle
         self.process = None
@@ -78,7 +100,7 @@ class SearchRectangle:
         self.process = Process(target=self._drawSR, args=(timeout,))
         self.process.start()
 
-    def isWithin(self, point : list[int]):
+    def isWithin(self, point : list[int]) -> bool:
         '''
         Check if a given point is within the search rectangle.
 

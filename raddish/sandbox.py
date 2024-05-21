@@ -7,8 +7,7 @@ def main():
 
     print(pyautogui.size())
 
-    rectangle1 = SearchRectangle([100, 100, 200, 200])
-    print(rectangle1.isWithin([301, 150]))
+    rectangle1 = SearchRectangle(topLeftImage=r'C:\Users\pclark\Desktop\test-automation-framework\raddish\tests\resources\lbl_vscode.png', bottomRightImage=r'C:\Users\pclark\Desktop\test-automation-framework\raddish\tests\resources\lbl_dots.png')
 
 if __name__ == '__main__':
     main()
