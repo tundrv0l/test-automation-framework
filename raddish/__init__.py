@@ -1,1 +1,1 @@
-__all__ = ['core']
+from .search_rectangle import SearchRectangle

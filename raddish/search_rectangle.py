@@ -6,13 +6,13 @@
 
 #---Imports---#
 import tkinter as tk
-from multiprocessing import Process
+from multiprocessing import Process, Event
 import pyautogui
 from pyautogui import ImageNotFoundException
 
 class SearchRectangle:
 
-    def __init__(self, region : list[int] = None, topLeftImage : str = None, bottomRightImage : str = None):
+    def __init__(self, region : list[int] = None, topLeftImage : str = None, bottomRightImage : str = None, draw : bool = False, timeout : int = 2500):
         '''
         Initialize the 'SearchRectangle' object.
 
@@ -38,6 +38,16 @@ class SearchRectangle:
         
         process : Process
             Holds the drawing process of the SR.
+        
+        draw : bool
+            A flag to determine if the SR should be drawn on the screen.
+
+        draw_complete : Event
+            An event to determine if the SR has finished drawing, used so
+                the program can wait for the SR to finish drawing before continuing.
+
+        timeout : int (Default = 2500)
+            The amount of time the SR will be drawn on the screen in milliseconds.
         '''
 
         # Check if the region is provided
@@ -64,17 +74,22 @@ class SearchRectangle:
             # Assign the values of the search rectangle
             self.x = topLeft[0]
             self.y = topLeft[1]
-            self.width = bottomRight[0] - topLeft[0]
-            self.height = bottomRight[1] - topLeft[1]
+            self.width = bottomRight[0] + bottomRight[2] - topLeft[0]
+            self.height = bottomRight[1] + bottomRight[3] - topLeft[1]
         
         else:
             raise InvalidSR("No region or images were provided to create the search rectangle.")
 
         # Start a new process to draw the search rectangle
         self.process = None
-        self.drawSR()
+        self.draw_complete = Event()
+
+        # Draw the search rectangle if the flag is set
+        if draw:
+            self.drawSR(timeout=timeout)
+            self._waitForDraw() 
     
-    def drawSR(self, timeout : int = 5000):
+    def drawSR(self, timeout : int = 2500):
         '''
         Draw a representation of the search rectangle on the screen by
          creating a semi-transparent red window that will disappear after a
@@ -83,7 +98,7 @@ class SearchRectangle:
 
         Parameters
         ----------
-        timeout : int (Default = 5000)
+        timeout : int (Default = 2500)
             The amount of time the SR will be displayed on the screen in milliseconds.
         
         Returns
@@ -144,6 +159,8 @@ class SearchRectangle:
 
         window.mainloop()
 
+        self.draw_complete.set()
+
     def _validateSR(self, region : list[int]):
         '''
         Checks if the search rectangle is valid on the screen.
@@ -157,6 +174,12 @@ class SearchRectangle:
         elif region[0] + region[2] > pyautogui.size()[0] or region[1] + region[3] > pyautogui.size()[1]:
             raise InvalidSR("The search rectangle exceeds the screen.")
         
+    def _waitForDraw(self):
+        '''
+        Wait for the search rectangle to finish drawing.
+        '''
+        self.draw_complete.wait()
+        
 
 
 #---Exceptions---#
@@ -165,7 +188,6 @@ class InvalidSR(RuntimeError):
     An exception to be raised when a search rectangle is invalid.
      This could be due to the SR being off the screen or having a 
      negative width or height.
-
     '''
     
     def __init__(self, message : str):
