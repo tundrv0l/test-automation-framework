@@ -9,7 +9,8 @@ import pyautogui
 from pyautogui import ImageNotFoundException
 from search_rectangle import SearchRectangle
 
-def locateImage(image_path: str, confidence: float = 0.9, region: list[int] = None, search_rectangle: SearchRectangle = None) -> tuple[int]:
+def locateImage(image_path: str, confidence: float = 0.9, region: list[int] = None, search_rectangle: SearchRectangle = None, \
+                on_success : function = None, on_fail : function = None ) -> tuple[int]:
     '''
     Locate an image on the screen.
 
@@ -27,6 +28,12 @@ def locateImage(image_path: str, confidence: float = 0.9, region: list[int] = No
 
     search_rectangle : SearchRectangle (Optional)
         A SearchRectangle object that represents a region on the screen.
+    
+    on_success : function (Optional)
+        An event to trigger when the image is found.
+    
+    on_fail : function (Optional)
+        An event to trigger when the image is not found.
 
     Returns
     -------
@@ -44,8 +51,8 @@ def locateImage(image_path: str, confidence: float = 0.9, region: list[int] = No
         raise e
     
 
-def locateAllImages(image_path: str, confidence: float = 0.9, region: list[int] = None, search_rectangle: SearchRectangle = None) -> list[tuple[int]]:
-
+def locateAllImages(image_path: str, confidence: float = 0.9, region: list[int] = None, search_rectangle: SearchRectangle = None, \
+                    on_success : function = None, on_fail : function = None) -> list[tuple[int]]:
     '''
     Locate all instances of an image on the screen.
 
@@ -63,6 +70,12 @@ def locateAllImages(image_path: str, confidence: float = 0.9, region: list[int] 
 
     search_rectangle : SearchRectangle (Optional)
         A SearchRectangle object that represents a region on the screen.
+    
+    on_success : function (Optional)
+        An event to trigger when the image is found.
+    
+    on_fail : function (Optional)
+        An event to trigger when the image is not found.
 
     Returns
     -------
