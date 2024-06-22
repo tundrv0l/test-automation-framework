@@ -161,6 +161,13 @@ class SearchRectangle:
 
         self.draw_complete.set()
 
+
+    def _waitForDraw(self):
+        '''
+        Wait for the search rectangle to finish drawing.
+        '''
+        self.draw_complete.wait()
+        
     def _validateSR(self, region : list[int]):
         '''
         Checks if the search rectangle is valid on the screen.
@@ -168,18 +175,11 @@ class SearchRectangle:
 
         # Check if the SR is off the screen
         if region[0] < 0 or region[1] < 0:
-            raise InvalidSR("The search rectangle is off the screen.")
+            raise InvalidSR("The region is off the screen.")
         elif region[2] == 0 or region[3] == 0:
-            raise InvalidSR("The search rectangle has a negative/zero width or height.")
+            raise InvalidSR("The region has a negative/zero width or height.")
         elif region[0] + region[2] > pyautogui.size()[0] or region[1] + region[3] > pyautogui.size()[1]:
-            raise InvalidSR("The search rectangle exceeds the screen.")
-        
-    def _waitForDraw(self):
-        '''
-        Wait for the search rectangle to finish drawing.
-        '''
-        self.draw_complete.wait()
-        
+            raise InvalidSR("The region exceeds the screen.")
 
 
 #---Exceptions---#
