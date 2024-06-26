@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[project]
+name = "raddish"
+version = "0.1.0"
+description = "A custom library that extends the functionality of the pyautogui library."
+authors = [{name = "Parker Clark", email = "tundravol2@gmail.com"}]
+requires-python = ">=3.6"
+
+[project.dependencies]
+pytesseract = "0.3.10"
+Pillow = "9.2.0"
+pyautogui = "0.9.54"
+tk = "0.1.0"
