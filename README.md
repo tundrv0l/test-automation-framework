@@ -12,7 +12,7 @@ Raddish is a custom Python library designed to extend the functionality of the `
 - `pytesseract`: For OCR capabilities.
 - `Pillow`: For image processing.
 - `pyautogui`: For GUI automation tasks.
-- `tk`: For additional displaying the SR.
+- `tk`: For additional displaying of the SR.
 
 ## TODO
 
