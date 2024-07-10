@@ -6,10 +6,10 @@
 
 #---Imports---#
 import pytesseract
-from PIL import Image
 import pyautogui
 from image_search import locateImage
 from utility import _determineRegion
+from pyscreeze import Box
 
 
 def readText(region : list[int] = None, language : str = 'eng') -> str:
@@ -31,11 +31,16 @@ def readText(region : list[int] = None, language : str = 'eng') -> str:
         The text that was read from the screen.
     '''
 
+    #---WIP---#
+
     # Check if a region is provided
-    top, left, width, height = _determineRegion(region=region)
+    image = _determineRegion(region=region)
+
+    #region = (top, left, width, height)
 
     # Take a screenshot of the region
-    screenshot = pyautogui.screenshot(region=(top, left, width, height))
+    # TODO: Region only works with hardcoded pixel values, need to fix this
+    screenshot = pyautogui.screenshot(region=Box(113, 42, 51, 23))
 
     # Read the text from the screenshot
     text = pytesseract.image_to_string(screenshot, lang=language)

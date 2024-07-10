@@ -7,10 +7,10 @@
 #---Imports---#
 import pyautogui
 from pyautogui import ImageNotFoundException
-from pyrect import Box
+from pyscreeze import Box
 from search_rectangle import SearchRectangle
 
-def _validateArea(self, region : list[int]):
+def _validateArea(region : list[int]):
         '''
         Checks if the search rectangle is valid on the screen.
         '''
@@ -32,31 +32,28 @@ def _determineRegion(region : list[int] = None, search_rectangle : SearchRectang
     if region != None:
 
         # If the region is a Box object, convert it to a list
-        if type(region) == Box:
-            region = [region.x, region.y, region.width, region.height]
-
-        print(region)
+        if isinstance(region, Box):
+            region = [region.top, region.left, region.width, region.height]
 
         # Validate the given points provided
         _validateArea(region)
+
         # Assign individual values from the region list
-        top = region[0]
-        left = region[1]
-        width = region[2]
-        height = region[3]
+        return region
+    
     # Check if a SearchRectangle is provided
     elif search_rectangle != None:
-        top = search_rectangle.x
-        left = search_rectangle.y
-        width = search_rectangle.width
-        height = search_rectangle.height
+
+        return [search_rectangle.x, search_rectangle.y, search_rectangle.width, search_rectangle.height]
+    
     # If neither are provided, search the entire screen
     else:
-        top = 0
-        left = 0
+        
+        # Get the screen size
         width, height = pyautogui.size()
 
-    return [top, left, width, height]
+        # Return the entire screen
+        return [0, 0, width, height]
 
 
 

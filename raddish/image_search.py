@@ -53,8 +53,11 @@ def locateImage(image_path: str, confidence: float = 0.9, region: list[int] = No
         image_location = pyautogui.locateOnScreen(image_path, confidence=confidence, region=(top, left, width, height))
 
         # Trigger the on_success event hook if the image is found
-        if image_location != None and callable(on_success):
-            on_success(image_location)
+        if image_location != None:
+
+            # Trigger the on_success event hook if it is callable
+            if callable(on_success):
+                on_success(image_location)
 
         # Return the image location   
         return image_location
