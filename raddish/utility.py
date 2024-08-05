@@ -33,7 +33,7 @@ def _determineRegion(region : list[int] = None, search_rectangle : SearchRectang
 
         # If the region is a Box object, convert it to a list
         if isinstance(region, Box):
-            region = [region.top, region.left, region.width, region.height]
+            region = [region.left, region.top, region.width, region.height]
 
         # Validate the given points provided
         _validateArea(region)

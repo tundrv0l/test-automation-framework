@@ -12,7 +12,7 @@ from utility import _determineRegion
 from pyscreeze import Box
 
 
-def readText(region : list[int] = None, language : str = 'eng') -> str:
+def readText(region : Box = None, language : str = 'eng') -> str:
     '''
     Read text from the screen using the Tesseract OCR engine.
 
@@ -34,16 +34,19 @@ def readText(region : list[int] = None, language : str = 'eng') -> str:
     #---WIP---#
 
     # Check if a region is provided
-    image = _determineRegion(region=region)
+    #image = _determineRegion(region=region)
 
     #region = (top, left, width, height)
 
     # Take a screenshot of the region
     # TODO: Region only works with hardcoded pixel values, need to fix this
-    screenshot = pyautogui.screenshot(region=Box(113, 42, 51, 23))
+    screenshot = pyautogui.screenshot(region=Box(left=700, top=39, width=142, height=25))
 
-    # Read the text from the screenshot
-    text = pytesseract.image_to_string(screenshot, lang=language)
+    # Upscale the image
+    enhanced_screenshot = screenshot.convert('L')
+    
+    # Adjust the language parameter, translate to text
+    text = pytesseract.image_to_string(enhanced_screenshot, lang=language)
 
     # Return the text
     return text

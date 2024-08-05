@@ -7,7 +7,7 @@ from text_reader import *
 
 def main():
 
-    region = locateImage(r'C:\Users\pclark\Desktop\test-automation-framework\raddish\tests\resources\btn_Ports.png', confidence=.5)
+    region = locateImage(r'C:\Users\pclark\Desktop\test-automation-framework\raddish\tests\resources\lbl_searchRectangle.PNG', confidence=.9)
 
     print(region)
 
